@@ -1,0 +1,16 @@
+#loginbox
+ { 
+ 	align-content: center; justify-content: space-around; background-color: #FF9900; border: 2px black;border-style: groove;  
+   border-width: medium; margin:200px 260px 190px 400px ; padding: 25px 50px 75px 65px; height:230px;width:390px; 
+    font-size: 27px ; position: sticky; font-family: sofia ;text-align: center; 
+ }
+p a
+{
+	color: black ; align-content:auto ; margin:200px 260px 190px 400px ; padding: 25px 50px 75px 100px; height:200px;width:350px;position: sticky; text-align: auto ;
+}
+#signup
+{
+ align-content: center; justify-content: space-around; background-color: #FF9900; border: 2px black;border-style: groove;  
+   border-width: medium; margin:200px 260px 190px 400px ; padding: 25px 50px 75px 100px; height:280px;width:370px; 
+    font-size: 27px ; position: sticky; font-family: sofia ;text-align: center; 
+ }
