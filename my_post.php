@@ -24,7 +24,7 @@ else{ ?>
 <body>
 <div class="row">
 	<div class="col-sm-12">
-		<center><h2>Your Latest Posts</h2></center><br><br>
+		<center><h2>Your Latest Idea's</h2></center><br><br>
 		<?php user_posts();?>
 	</div>
 </div>
