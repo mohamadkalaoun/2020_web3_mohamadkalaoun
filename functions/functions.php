@@ -13,7 +13,7 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 			$upload_image = $_FILES['upload_image']['name'];
             $image_tmp = $_FILES['upload_image']['tmp_name'];
             $random_number = rand(1,100);
-           
+            
 
             if(strlen($content) > 250){
             	echo "<script>alert('Please Use 250 or less than 250 words')</script>";
@@ -21,19 +21,21 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
             }
             else if(strlen($upload_image) >= 1 && strlen($content) >= 1 && strlen($title_idea) >= 1){
             	move_uploaded_file($image_tmp,"imagepost/$upload_image.$random_number");
+         
+	              $insert1 = "insert into ideas (user_id,title_idea,desc_idea,upload_image,post_date,size_part,group_pass,cooldown,counter_part) values ('$user_id','$title_idea','$content','$upload_image.$random_number',NOW(),'50','','','1')";
 
-	              $insert = "insert into ideas (user_id,title_idea,desc_idea,upload_image,post_date) values ('$user_id','$title_idea','$content','$upload_image.$random_number',NOW())";
-
-
-	              $run = mysqli_query($con,$insert);
-
+	              $run = mysqli_query($con,$insert1);
 					if($run){
-					echo "<script>alert('Your Idea Have Been Updated Successfully.')</script>";
+						echo"DONE";
+					/*$insert2 = "insert into brainstorm (owner_id , participater_id , size_part , message , write_permission , group_pass , cooldown ,counter_part) values ( '$user_id','$user_id','50','','TRUE','','','1')";
+					$run2 = mysqli_query($con,$insert2);*/
+					
 					echo"<script>window.open('home.php','_self')</script>";
 
 					$update = "update users set posts='yes' where user_id='$user_id'";
 					$run_update = mysqli_query($con,$update);
 					}
+				 
 
 			exit();
             }
@@ -50,7 +52,7 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 
 	global $con;
 
-	$per_page=4;
+	$per_page=5;
 
 	if (isset($_GET['page'])) {
 	$page = $_GET['page'];
@@ -111,7 +113,7 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 					</div>
 				</div><br>
 				<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Comment</button></a>
-				&nbsp;<a href='index01.php?post_id=$post_id' style='float:left;'><button class='btn btn-info'>participate</button></a>
+				&nbsp;<a href='lobby.php?post_id=$post_id' style='float:left;'><button class='btn btn-info' name='participate'>participate</button></a>
 				</div>
 				<div class='col-sm-3'>
 				</div>
@@ -217,53 +219,14 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 					</div>
 				</div><br>
 				<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Comment</button></a>
-				&nbsp;<a href='index01.php?post_id=$post_id' style='float:left;'><button class='btn btn-info'>participate</button></a>
+				&nbsp;<a href='lobby.php?post_id=$post_id' style='float:left;'><button class='btn btn-info' name='participate'>participate</button></a>
 				</div>
 				<div class='col-sm-3'>
 				</div>
 			</div><br><br>";
 
 		}
-		else{
-
-		echo "
-
-		<div class='row'>
-			<div class='col-sm-3'>
-			</div>
-			<div id='posts' class='col-sm-6'>
-			<div class='row'>
-					<div class='col-sm-2'>
-						<p><img src='users/$user_image' class='img-circle' width='100px' height='100px'></p>
-					</div>
-					<div class='col-sm-6'>
-						<h3><a style='text-decoration: none;cursor: pointer;color: #3897f0;' href='user_profile.php?u_id=$user_id'>$user_name</a></h3>
-						<h4><small style='color:black;'>Updated an idea on <strong>$post_date</strong></small></h4>
-					</div>
-					<div class='col-sm-4'>
-
-					</div>
-				</div>
-				<div class='row'>
-					<div class='col-sm-2'>
-					</div>
-					<div class='col-sm-6'>
-					    <p>$title_idea</p> <br>
-						<h3><p>$content</p></h3>
-					</div>
-					<div class='col-sm-4'>
-
-					</div>
-				</div>
-				<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Comment</button></a>
-				&nbsp;<a href='idea.php?post_id=$post_id' style='float:left;'><button class='btn btn-info'>participate</button></a>
-			</div>
-			<div class='col-sm-3'>
-			</div>
-		</div><br><br>
-
-		";
-	}
+	// modification
 		include("comments.php");
 
 		echo "
@@ -389,7 +352,7 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 					</div>
 				</div><br>
 				<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Comment</button></a>
-				&nbsp;<a href='idea.php?post_id=$post_id' style='float:left;'><button class='btn btn-info'>participate</button></a>
+				&nbsp;<a href='lobby.php?post_id=$post_id' style='float:left;'><button class='btn btn-info'>participate</button></a>
 				</div>
 				<div class='col-sm-3'>
 				</div>
@@ -463,7 +426,7 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 					</div>
 				</div><br>
 				<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Comment</button></a>
-				&nbsp;<a href='idea.php?post_id=$post_id' style='float:left;'><button class='btn btn-info'>participate</button></a>
+				&nbsp;<a href='lobby.php?post_id=$post_id' style='float:left;'><button class='btn btn-info'>participate</button></a>
 				</div>
 				<div class='col-sm-3'>
 				</div>
@@ -471,44 +434,7 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 			";
 
 		}
-		else{
-
-		echo "
-
-		<div class='row'>
-			<div class='col-sm-3'>
-			</div>
-			<div id='posts' class='col-sm-6'>
-			<div class='row'>
-					<div class='col-sm-2'>
-						<p><img src='users/$user_image' class='img-circle' width='100px' height='100px'></p>
-					</div>
-					<div class='col-sm-6'>
-						<h3><a style='text-decoration: none;cursor: pointer;color: #3897f0;' href='user_profile.php?u_id=$user_id'>$user_name</a></h3>
-						<h4><small style='color:black;'>Updated an idea on <strong>$post_date</strong></small></h4>
-					</div>
-					<div class='col-sm-4'>
-
-					</div>
-				</div>
-				<div class='row'>
-					<div class='col-sm-2'>
-					</div>
-					<div class='col-sm-6'>
-					    <h2><p>$title_idea</p></h2> <br>
-						<h3><p>$content</p></h3>
-					</div>
-					<div class='col-sm-4'>
-
-					</div>
-				</div>
-				<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Comment</button></a>
-				&nbsp;<a href='idea.php?post_id=$post_id' style='float:left;'><button class='btn btn-info'>participate</button></a>
-			</div>
-			<div class='col-sm-3'>
-			</div>
-		</div><br><br>";
-	}
+	//modification m2
 
 	}
  }
