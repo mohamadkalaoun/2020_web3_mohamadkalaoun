@@ -66,20 +66,7 @@
 					    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 					    <input id="email" type="text" class="form-control" name="u_email" placeholder="Email" required="required">
 					</div><br>
-					<!--
-					<div class="input-group">
-					    <span class="input-group-addon"><i class="	glyphicon glyphicon-chevron-down"></i></span>
-			            <select class="form-control" name="u_country" required="required">
-							<option disabled>Select a Country</option>
-							<option>Pakistan</option>
-							<option>United States of America</option>
-							<option>India</option>
-							<option>Japan</option>
-							<option>UK</option>
-							<option>France</option>
-						</select>
-					</div><br>
-					-->
+				
 					<div class="input-group">
 					    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 						<input type="date" name="u_birthday" class="form-control input-md" required="required" >
