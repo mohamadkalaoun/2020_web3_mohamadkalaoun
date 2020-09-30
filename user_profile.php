@@ -19,7 +19,8 @@ else{ ?>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="styles/home_style2.css" media="all"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style/2home_style2.css" media="all"/>
 </head>
 <style>
 #own_posts{
@@ -32,6 +33,7 @@ else{ ?>
    	width:100%;
 }
 </style>
+
 <body>
 <div class="row">
 	<?php
@@ -88,7 +90,43 @@ else{ ?>
 				$gender = "coming soon";
 				$user_country = "coming soon" ;
 				$register_date = $row['user_reg_date'];
+				$report = $row['report'];
+				if(is_null($report)){
+					$report=0;
+				}
 
+					$user = $_SESSION['user_email'];
+					$get_user = "select * from users where user_email='$user'";
+					$run_user = mysqli_query($con,$get_user);
+					$row=mysqli_fetch_array($run_user);
+
+					$userown_id = $row['user_id'];
+					$user_name = $row['user_name'];
+					$user_image = $row['user_image'];
+					$reported = $row['reported'];
+
+					if(is_null($reported)){
+						$reported="rain";
+						$im=0;
+					}
+					else{
+						$im=0;	
+						$array=unserialize($reported);
+						$reported=implode(',', $array);
+						foreach( $array as $key => $value ){
+    						if ($value==$u_id) {
+    							$im+=1;
+    						}
+						}
+					}
+					if($user_id == $userown_id){
+						echo"<a href='edit_profile.php?u_id=$userown_id' class='btn btn-success'/>Edit Profile</a><br><br><br>";
+					}
+
+					echo"
+					</div>
+					</center>
+					";
 				echo "
 				<div class='row'>
 					<div class='col-sm-1'>
@@ -103,26 +141,19 @@ else{ ?>
 					  <li class='list-group-item' title='User Status'><strong style='color:grey;'>$describe_user</strong></li>
 					  <li class='list-group-item' title='Gender'>$gender</li>
 					  <li class='list-group-item' title='Country'>$user_country</li>
-					  <li class='list-group-item' title='User Registration Date'>$register_date</li>
-					</ul>
-					";
-					$user = $_SESSION['user_email'];
-					$get_user = "select * from users where user_email='$user'";
-					$run_user = mysqli_query($con,$get_user);
-					$row=mysqli_fetch_array($run_user);
+					  <li class='list-group-item' title='User Registration Date'>$register_date</li><br>
+					  <form method='post'>
+        				<input id='leave' type='submit' name='atr1' value='Message'>
+        			  </form><br>
+					  <li class='list-group-item list-group-item-warning' title='Reported'>Reported $report times</li>";
+					 if ($im==0) {
+					 	echo " <button id='jreport' type='button' class='btn btn-danger'>Report User</button></ul>";
+					 }
+					 else if ($im>0) {
+					 	echo " <button id='ureport' type='button' class='btn btn-secondary'>Unreport User</button></ul>";
+					 }
+					 
 
-					$userown_id = $row['user_id'];
-					$user_name = $row['user_name'];
-					$user_image = $row['user_image'];
-
-					if($user_id == $userown_id){
-						echo"<a href='edit_profile.php?u_id=$userown_id' class='btn btn-success'/>Edit Profile</a><br><br><br>";
-					}
-
-					echo"
-					</div>
-					</center>
-					";
 				}
 			?>
 	<div class='col-sm-8'>
@@ -183,7 +214,6 @@ else{ ?>
 						</div>
 					</div><br>
 					<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-success'>View</button></a>
-					<a href='functions/delete_post.php?post_id=$post_id' style='float:right;'><button class='btn btn-danger'>Delete</button></a>
 				</div><br/><br/>";
 				}			
 		}
@@ -192,6 +222,58 @@ else{ ?>
 	</div>
 </div>
 <?php }  ?>
+<script>
+$(document).ready(function(){
+		var u_id = "<?php echo $u_id ?>";
+    	var reported = "<?php echo"$reported"; ?>";
+    	//var reported = res.replace(/\"/g, "\'");
+    	var userown_id = "<?php echo $userown_id ?>";
+    $("#jreport").click(function(){
+         $.ajax({
+           type: "POST",
+           url: "report.php",
+           data: {  
+              'function': 'report',
+              'u_id': u_id,
+              'reported': reported,
+              'userown_id': userown_id,
+              },
+           dataType: "json",
+
+           success: function(data){
+           	<?php // echo "header('location: user_profile.php?u_id=$user_id');"; ?>
+           	console.log("mshe l 7al");
+           	history.go(0);
+           },
+        }); 
+    });
+    $("#ureport").click(function(){
+         $.ajax({
+           type: "POST",
+           url: "report.php",
+           data: {  
+              'function': 'unreport',
+              'u_id': u_id,
+              'reported': reported,
+              'userown_id': userown_id,
+              },
+           dataType: "json",
+
+           success: function(data){
+           	<?php // echo "header('location: user_profile.php?u_id=$user_id');"; ?>
+           	console.log("mshe l 7al");
+           	window.location.reload();
+           },
+        }); 
+    });
+ });
+</script>
+<?php
+	if(isset($_POST['atr1'])) {
+    		header("Location: messages.php?u_id=$user_id"); 
+    	}    	
+?>
 </body>
 </html>
 <?php } ?>
+
