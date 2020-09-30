@@ -9,7 +9,7 @@
                     
       $user_id = $row['user_id']; 
       $user_name = $row['user_name'];
-      
+      $get_id = $_GET['post_id'];
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -21,21 +21,22 @@
     
     <title>Chat</title>
     
-    <link rel="stylesheet" href="style01.css" type="text/css" />
+    <link rel="stylesheet" href="style/style01.css" type="text/css" />
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src="chat.js"></script>
     
     <script type="text/javascript">
         
-        var name = "<?php echo $user_name ?>";
+      var name = "<?php echo $user_name ?>";
     	$("#name-area").html("You are: <span>" + name + "</span>");
     	
-    	// kick off chat
-        var chat =  new Chat();
+    	// kick off 
+        var chat = new Chat();
     	$(function() {
-    	
-    		 chat.getState(); 
+
+    		 chat.getState();
+         chat.update(); 
     		 
     		 // watch textarea for key presses
              $("#sendie").keydown(function(event) {  
@@ -74,32 +75,59 @@
     					$(this).val(text.substring(0, maxLength));
     					
     				}	
-    				
-    				
+    				   				
     			  }
-             });
-            
+             });            
     	});
+
+$(document).ready(function(){
+  $.ajax({
+           type: "POST",
+           url: "process.php",
+           data: {  
+              'function': 'getmessages',
+              'file': file
+              },
+           dataType: "json",
+           success: function(data){
+             if(data.lex){
+              for (var i = 0; i < data.lex.length; i++) {
+                              $('#chat-area').append($("<p>"+ data.lex[i] +"</p>"));
+                          }                 
+             }
+             document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
+             //instanse = false;
+             //state = data.state;
+           },
+        });
+});
     </script>
 
 
 </head>
 
-<body onload="setInterval('chat.update()', 1000)">
+<body onload="setInterval('chat.update()', 1300)">
 
-    <div id="page-wrap">
-    
-        <h2>Global chat :</h2>
-        
-        <p id="name-area"></p>
-        
-        <div id="chat-wrap"><div id="chat-area"></div></div>
-        
+    <div id="page-wrap"> 
+      <table width="560px" border="0" cellspacing="0" cellpadding="5" height="640px" class="main" >
+       <tbody> 
+         <tr>
+          <th class="header" scope="col" style="background-color: white"><?php echo "<a href='lobby.php?post_id=$get_id' >";?><img src="images/PicsArt_07-31-05.34.23.png" width="56" height="53" alt="back"/></th>
+          <th class="header" scope="col" colspan="2">&emsp; <a style="color: white; font-size: 50px;" href="#">Global Group Chat</a></th>
+        </tr>
+        <tr>
+         <td colspan="3" >
+          <p id="name-area"></p>       
+          <div id="chat-wrap"><div id="chat-area"></div></div>
+         </td>
+        </tr>
+        <tr>
         <form id="send-message-area">
-            <p>Your message: </p>
-            <textarea id="sendie" maxlength = '100' ></textarea>
+            <td colspan="3"><textarea id="sendie" maxlength = '100' placeholder="type your message.." ></textarea></td>
         </form>
-    
+        </tr>
+       </tbody>
+     </table>
     </div>
 
 </body>
