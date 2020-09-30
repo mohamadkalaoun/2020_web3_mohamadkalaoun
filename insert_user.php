@@ -45,8 +45,9 @@ include("includes/connection.php");
 			$profile_pic = "head_sun_flower.png";
 		else if($rand == 3)
 			$profile_pic = "head_turqoise.png";
+	$report=0;
 
-	$insert = "insert into users (f_name,l_name,user_name,describe_user,Relationship,user_pass,user_email,user_birthday,user_image,user_cover,user_reg_date,status,posts,recovery_account) values ('$first_name','$last_name','$username','Hello everyone ive start using BulBow.','........','$pass','$email','$birthday','$profile_pic','default_cover.jpg',NOW(),'$status','$posts','ifyou')";
+	$insert = "insert into users (f_name,l_name,user_name,describe_user,Relationship,user_pass,user_email,user_birthday,user_image,user_cover,user_reg_date,status,posts,recovery_account,report) values ('$first_name','$last_name','$username','Hello everyone ive start using BulBow.','........','$pass','$email','$birthday','$profile_pic','default_cover.jpg',NOW(),'$status','$posts','ifyou','$report')";
 
 	$query = mysqli_query($con,$insert);
 
