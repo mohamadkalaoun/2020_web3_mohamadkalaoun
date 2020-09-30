@@ -19,7 +19,7 @@ else{ ?>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="styles/home_style2.css" media="all"/>
+    <link rel="stylesheet" href="style/home_style2.css" media="all"/>
 </head>
 <style>
 #scroll_messages{
@@ -178,6 +178,9 @@ else{ ?>
 				$insert = "insert into user_messages(user_to,user_from,msg_body,date,msg_seen) values ('$user_to_msg','$user_from_msg','$msg',NOW(),'no')";
 
 				$run_insert = mysqli_query($con,$insert);
+				if ($run_insert) {
+					header("Location: http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+				}
 
 				}
 			}
