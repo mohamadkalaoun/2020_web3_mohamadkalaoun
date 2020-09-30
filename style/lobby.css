@@ -1,0 +1,22 @@
+*{
+  		text-align:center;
+		background: #5db2db52;
+  		padding: 10px;
+  
+	}
+html{
+	display: flex;
+	width: 100%;
+}
+#zoom {
+
+
+  transition: transform .6s;
+  margin: 0 auto;
+}
+
+#zoom:hover {
+  -ms-transform: scale(1.1); /* IE 9 */
+  -webkit-transform: scale(1.1); /* Safari 3-8 */
+  transform: scale(1.1); 
+}
