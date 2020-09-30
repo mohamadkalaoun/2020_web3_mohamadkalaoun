@@ -79,3 +79,4 @@ function sendChat(message, nickname)
 		   },
 		});
 }
+
