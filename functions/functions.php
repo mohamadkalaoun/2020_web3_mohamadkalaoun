@@ -2,12 +2,17 @@
 
 $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not established");
 
-		//function for inserting posts
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////                                                                                                      ////
+////                               function to insert an idea                                            ////
+////                                                                                                      ////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		function insertPost(){
 
 			if(isset($_POST['sub'])){
 			global $con;
 			global $user_id;
+			//echo "$user_id";
 			$title_idea = htmlentities($_POST['title_idea']);
 			$content = htmlentities($_POST['content']);
 			$upload_image = $_FILES['upload_image']['name'];
@@ -21,14 +26,13 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
             }
             else if(strlen($upload_image) >= 1 && strlen($content) >= 1 && strlen($title_idea) >= 1){
             	move_uploaded_file($image_tmp,"imagepost/$upload_image.$random_number");
-         
-	              $insert1 = "insert into ideas (user_id,title_idea,desc_idea,upload_image,post_date,size_part,group_pass,cooldown,counter_part) values ('$user_id','$title_idea','$content','$upload_image.$random_number',NOW(),'50','','','1')";
-
+         		$counter_part=array("$user_id");
+         		$counter_part2=serialize($counter_part);
+	              $insert1 = "insert into ideas (user_id,title_idea,desc_idea,upload_image,post_date,size_part,group_pass,cooldown,counter_part) values ('$user_id','$title_idea','$content','$upload_image.$random_number',NOW(),'50','','','$counter_part2')";
+	              //echo "$insert1";
 	              $run = mysqli_query($con,$insert1);
 					if($run){
 						echo"DONE";
-					/*$insert2 = "insert into brainstorm (owner_id , participater_id , size_part , message , write_permission , group_pass , cooldown ,counter_part) values ( '$user_id','$user_id','50','','TRUE','','','1')";
-					$run2 = mysqli_query($con,$insert2);*/
 					
 					echo"<script>window.open('home.php','_self')</script>";
 
@@ -47,7 +51,11 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
         }
     }
 
-	//function for displaying posts
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////                                                                                                      ////
+////                               function for displaying all ideas                                      ////
+////                                                                                                      ////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function get_posts(){
 
 	global $con;
@@ -83,6 +91,16 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 		$user_name = $row_user['user_name'];
 		$user_image = $row_user['user_image'];
 
+		// getting the user who want to particicpate
+		$user_com = $_SESSION['user_email'];
+		$get_com = "select * from users where user_email='$user_com'";
+		$run_com = mysqli_query($con,$get_com);
+		$row_com=mysqli_fetch_array($run_com);
+		$curr_user = $row_com['user_id'];
+		$user_com_name = $row_com['user_name'];
+                    
+	
+
 		 if(strlen($content) >= 1 && strlen($upload_image) >= 1 && strlen($title_idea) >= 1){
             echo "
 			<style>
@@ -95,7 +113,7 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 				<div id='posts' class='col-sm-6'>
 				<div class='row'>
 					<div class='col-sm-2'>
-						<p><img src='users/$user_image' class='img-circle' width='100px' height='100px'></p>
+						<p><img src='users/$user_image' class='img-circle' width='50px' height='50px'></p>
 					</div>
 					<div class='col-sm-6'>
 						<h3><a style='text-decoration: none;cursor: pointer;color: #3897f0;' href='user_profile.php?u_id=$user_id'>$user_name</a></h3>
@@ -125,7 +143,13 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 	}
 	include("pagination.php");
 	}
-// single post
+
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////                                                                                                      ////
+////                             function for displaying a single idea                                    ////
+////                                                                                                      ////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function single_post(){
 
 	if(isset($_GET['post_id'])){
@@ -268,10 +292,12 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 	}
 
 
-	//function for displaying user posts
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////                                                                                                      ////
+////                              function for displaying user ideas                                      ////
+////                                                                                                      ////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function user_posts(){
-
-
 	global $con;
 
 			if(isset($_GET['u_id'])){
@@ -366,8 +392,12 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 		}
 
 	}
-
-	//function for displaying search results
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////                                                                                                      ////
+////                            function for displaying search results                                    ////
+////                                                                                                      ////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function results(){
 
 	global $con;
@@ -434,13 +464,17 @@ $con = mysqli_connect("localhost","root","","bulbow") or die("Connection was not
 			";
 
 		}
-	//modification m2
 
 	}
  }
 
 
-	//function for displaying search results
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////                                                                                                      ////
+////                              function for displaying search users                                    ////
+////                                                                                                      ////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function search_user(){
 
 	global $con;
