@@ -1,4 +1,0 @@
-CREATE TABLE `bulbow`.`ideas` ( `post_id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` INT(11) NOT NULL , `title_idea` VARCHAR(255) NOT NULL , `desc_idea` VARCHAR(255) NOT NULL , `upload_image` VARCHAR(255) NOT NULL , `post_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`post_id`)) ENGINE = MyISAM;
-
-
-ALTER TABLE `ideas` ADD `size_part` INT(11) NOT NULL AFTER `post_date`, ADD `group_pass` VARCHAR(255) NULL AFTER `size_part`, ADD `cooldown` VARCHAR(255) NULL AFTER `group_pass`, ADD `counter_part` INT(11) NULL AFTER `cooldown`;
