@@ -14,29 +14,29 @@
         	 break;	
     	
     	 case('update'):
-        	$state = $_POST['state'];
-        	if(file_exists('chat.txt')){
-        	   $lines = file('chat.txt');
-        	 }
-        	 $count =  count($lines);
-        	 if($state == $count){
-        		 $log['state'] = $state;
-        		 $log['text'] = false;
-        		 
-        		 }
-        		 else{
-        			 $text= array();
-        			 $log['state'] = $state + count($lines) - $state;
-        			 foreach ($lines as $line_num => $line)
+            $state = $_POST['state'];
+            if(file_exists('chat.txt')){
+               $lines = file('chat.txt');
+             }
+             $count =  count($lines);
+             if($state == $count){
+                 $log['state'] = $state;
+                 $log['text'] = false;
+                    } // knt 7atet ma7al l false $text
+                 else{
+                     $text= array();
+                     $log['state'] = $state + count($lines) - $state; // wa ka2ana  : $log['state']=$count;
+                     //$log['state']=$count;
+                     foreach ($lines as $line_num => $line)
                        {
-        				   if($line_num >= $state){
+                           if($line_num >= $state){
                          $text[] =  $line = str_replace("\n", "", $line);
-        				   }
+                           }
          
                         }
-        			 $log['text'] = $text; 
-        		 }
-        	  
+                     $log['text'] = $text; 
+                 }
+              
              break;
     	 
     	 case('send'):
@@ -53,7 +53,17 @@
         	 fwrite(fopen('chat.txt', 'a'), "<span>". $nickname . "</span>" . $message = str_replace("\n", " ", $message) . "\n"); 
 		 }
         	 break;
-    	
+        case('getmessages'):
+            if(file_exists('chat.txt')){
+               $lines = file('chat.txt');
+             }
+    	      $text= array();   
+              foreach ($lines as $line_num => $line)
+                       {
+                         $text[] =  $line = str_replace("\n", "", $line);
+                        }
+                     $log['lex'] = $text; 
+            break;
     }
     
     echo json_encode($log);
